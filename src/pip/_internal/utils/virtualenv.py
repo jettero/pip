@@ -29,11 +29,18 @@ def _running_under_regular_virtualenv():
     # pypa/virtualenv case
     return hasattr(sys, "real_prefix")
 
+def _running_under_pyenv() -> bool:
+    """Checks if we're running in a pyenv type virtualenv
+
+    This handles virtual environments created via pyenv.
+    """
+
+    return sys.prefix.startswith(os.environ.get('PYENV_ROOT', '////'))
 
 def running_under_virtualenv():
     # type: () -> bool
     """Return True if we're running inside a virtualenv, False otherwise."""
-    return _running_under_venv() or _running_under_regular_virtualenv()
+    return _running_under_venv() or _running_under_regular_virtualenv() or _running_under_pyenv()
 
 
 def _get_pyvenv_cfg_lines():

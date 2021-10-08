@@ -161,6 +161,8 @@ def warn_if_run_as_root() -> None:
     On Windows, users may run pip as Administrator without issues.
     This warning only applies to Unix root users outside of virtualenv.
     """
+    if os.environ.get ('PIP_QUIET_ROOT_OPINION'):
+        return
     if running_under_virtualenv():
         return
     if not hasattr(os, "getuid"):
